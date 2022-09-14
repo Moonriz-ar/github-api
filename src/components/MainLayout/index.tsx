@@ -1,16 +1,16 @@
 import { Outlet } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
-import { StyledLink } from './styles';
+import { StyledLink } from '../Links/styles';
 
-import { userMock as user } from '../mock/user';
+import { userMock as user } from '../../mock/user';
 
 const MainLayout: React.FC = () => {
   return (

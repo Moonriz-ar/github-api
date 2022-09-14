@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Home from './screens/Home';
 import Info from './screens/Info';
 import Login from './screens/Login';
-import MainLayout from './components/Layout';
+import MainLayout from './components/MainLayout';
 import Repositories from './screens/Repositories';
 import Repository from './screens/Repository';
 
@@ -32,14 +32,17 @@ const App: React.FC = () => {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Routes>
-        <Route path="login" element={<Login />} />
         <Route path="/" element={<MainLayout />}>
+          <Route path="login" element={<Login />} />
           <Route path="home" element={<Home />} />
           <Route path="info" element={<Info />} />
-          <Route path="repositories" element={<Repositories />} />
-          <Route path=":repositoryId" element={<Repository />} />
-          <Route path=":repositoryId/details" element={<h1>Details</h1>} />
+          <Route path="repositories" element={<Repositories />}>
+            <Route path=":repositoryId" element={<Repository />} />
+            <Route path=":repositoryId/details" element={<h1>Details</h1>} />
+            <Route path="*" element={<h1>404 Nothing here!</h1>} />
+          </Route>
         </Route>
+        <Route path="*" element={<h1>404 Nothing here!</h1>} />
       </Routes>
     </ThemeProvider>
   );
