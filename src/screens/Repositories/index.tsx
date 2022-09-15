@@ -10,7 +10,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import ReposList from './components/ReposList';
+import ReposList from './components/RepoList';
 
 import { userMock as user } from '../../mock/user';
 

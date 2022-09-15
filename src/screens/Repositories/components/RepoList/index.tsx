@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import { Repository } from '../../../types';
-import RepoCard from './RepoCard';
+import { Repository } from '../../../../types';
+import RepoCard from '../RepoCard';
 
 interface Props {
   repositories: Array<Repository> | null;

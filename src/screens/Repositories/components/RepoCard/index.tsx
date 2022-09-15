@@ -7,9 +7,11 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { StyledAnchor, StyledLink } from '../../../components/Links/styles';
-import Stats from '../../../components/Stats';
-import { Repository } from '../../../types';
+import { StyledAnchor, StyledLink } from '../../../../components/Links/styles';
+import Stats from '../../../../components/Stats';
+import { Tag } from './styles';
+
+import { Repository } from '../../../../types';
 
 interface Props {
   repository: Repository;
@@ -19,9 +21,20 @@ const RepoCard = ({ repository }: Props) => {
   return (
     <Card>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          {repository.name}
-        </Typography>
+        <Stack
+          alignItems="start"
+          direction="row"
+          justifyContent="space-between"
+        >
+          <Typography variant="h6" gutterBottom>
+            {repository.name}
+          </Typography>
+          {repository.fork ? (
+            <Tag variant="body2" color="text.secondary">
+              forked
+            </Tag>
+          ) : undefined}
+        </Stack>
         <Divider />
         <Stack direction="row" marginY={2} spacing={4}>
           <Stats title="Language" body={repository.language} />
