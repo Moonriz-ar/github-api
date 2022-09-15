@@ -6,9 +6,18 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
+import ReposList from './components/ReposList';
+
+import { userMock as user } from '../../mock/user';
 
 const Repositories: React.FC = () => {
+  const [repositories, setRepositories] = useState(null);
+  const [loading, setLoading] = useState<Boolean>(false);
+  const [error, setError] = useState<unknown | null>(null);
   const [formValues, setFormValues] = useState({
     sort: 'created',
     direction: 'desc',
@@ -19,11 +28,24 @@ const Repositories: React.FC = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const onSubmit = (e: React.SyntheticEvent): void => {
+  const onSubmit = async (e: React.SyntheticEvent): Promise<void> => {
     e.preventDefault();
-    console.log('sort value: ', formValues.sort);
-    console.log('direction value: ', formValues.direction);
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://api.github.com/users/${user.login}/repos?sort=${formValues.sort}&direction=${formValues.direction}`
+      );
+      const repos = await response.json();
+      setRepositories(repos);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  console.log(repositories);
+  console.log(error);
 
   return (
     <>
@@ -68,6 +90,11 @@ const Repositories: React.FC = () => {
           </Button>
         </Stack>
       </form>
+      {loading ? (
+        <Typography variant="subtitle1">Loading...</Typography>
+      ) : (
+        <ReposList repositories={repositories} />
+      )}
     </>
   );
 };

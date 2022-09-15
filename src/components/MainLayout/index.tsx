@@ -42,7 +42,9 @@ const MainLayout: React.FC = () => {
         </AppBar>
       </Box>
       <Container>
-        <Outlet />
+        <Box mb={4}>
+          <Outlet />
+        </Box>
       </Container>
     </>
   );

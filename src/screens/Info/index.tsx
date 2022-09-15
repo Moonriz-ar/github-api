@@ -23,7 +23,7 @@ const Info: React.FC = () => {
           </Typography>
         </Stack>
         <Divider />
-        <Stack direction="row" spacing={8} marginY={2}>
+        <Stack direction="row" my={2} spacing={8}>
           <Stats title="Followers" body={user.followers} />
           <Stats title="Following" body={user.following} />
           <Stats title="Repos" body={user.public_repos} />
