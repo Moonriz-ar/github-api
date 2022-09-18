@@ -42,12 +42,7 @@ const RepoCard = ({ repository }: Props) => {
           <Stats title="Watchers" body={repository.watchers_count} />
         </Stack>
         <Box>
-          <Stats
-            title="Description"
-            body={
-              repository.description ? repository.description : 'No Description'
-            }
-          />
+          <Stats title="Description" body={repository.description} />
         </Box>
       </CardContent>
       <Divider variant="middle" />

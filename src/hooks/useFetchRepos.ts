@@ -1,6 +1,8 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import { Repo, ReposResponseFromApi } from '../types/index';
+
+import { userMock as user } from '../mocks/user';
 
 interface Params {
   sort: string;
@@ -58,30 +60,48 @@ const INITIAL_STATE: FetchState = {
   error: null,
 };
 
-export const useFetch = (url: string) => {
+const REPOS_API_URL = `https://api.github.com/users/${user.login}/repos`;
+
+export const useFetchRepos = () => {
   const [state, dispatch] = useReducer(fetchReposReducer, INITIAL_STATE);
 
-  const fetchRepos = async (params?: Params): Promise<ReposResponseFromApi> => {
-    dispatch({ type: 'REQUEST_STARTED' });
-    let response;
-    if (params) {
-      response = await fetch(
-        `${url}?sort=${params.sort}&direction=${params.direction}`
-      );
-    } else {
-      response = await fetch(url);
-    }
-    if (!response.ok) {
-      console.log('inside fetchRepos', response);
-      // throw new Error(`${response.status} ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;
-  };
+  useEffect(() => {
+    fetchRepos();
+  }, []);
 
-  const mapFromApiToRepos = (
-    apiResponse: ReposResponseFromApi
-  ): Array<Repo> => {
+  async function fetchRepos(
+    params?: Params
+  ): Promise<ReposResponseFromApi | string> {
+    try {
+      dispatch({ type: 'REQUEST_STARTED' });
+      if (params) {
+        const response = await fetch(
+          `${REPOS_API_URL}?sort=${params.sort}&direction=${params.direction}`
+        );
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        const repositories = mapFromApiToRepos(data);
+        dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
+        return data;
+      } else {
+        const response = await fetch(REPOS_API_URL);
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        const repositories = mapFromApiToRepos(data);
+        dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
+        return data;
+      }
+    } catch (err: any) {
+      dispatch({ type: 'REQUEST_FAILED', error: err.message });
+      throw err;
+    }
+  }
+
+  function mapFromApiToRepos(apiResponse: ReposResponseFromApi): Array<Repo> {
     return apiResponse.map((repoFromApi) => {
       let {
         description,
@@ -107,7 +127,7 @@ export const useFetch = (url: string) => {
         watchers_count,
       };
     });
-  };
+  }
 
-  return { dispatch, state, fetchRepos, mapFromApiToRepos };
+  return { dispatch, state, fetchRepos };
 };

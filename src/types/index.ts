@@ -34,7 +34,7 @@ export interface User {
 }
 
 export interface Repo {
-  description: string | null;
+  description: string;
   fork: boolean;
   html_url: string;
   id: number;

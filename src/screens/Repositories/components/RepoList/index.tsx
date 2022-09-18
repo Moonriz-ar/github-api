@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import { Repository } from '../../../../types';
+import { Repo } from '../../../../types';
 import RepoCard from '../RepoCard';
 
 interface Props {
-  repositories: Array<Repository> | null;
+  repositories: Array<Repo> | null;
 }
 
 const ReposList = ({ repositories }: Props) => {
