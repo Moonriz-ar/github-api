@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,46 +10,62 @@ import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { useFetch } from '../../hooks/useFetchRepos';
 import ReposList from './components/RepoList';
 
-import { userMock as user } from '../../mock/user';
+import { userMock as user } from '../../mocks/user';
 
 const Repositories: React.FC = () => {
-  const [repositories, setRepositories] = useState(null);
-  const [loading, setLoading] = useState<Boolean>(false);
-  const [error, setError] = useState<unknown | null>(null);
+  const { dispatch, state, fetchRepos, mapFromApiToRepos } = useFetch(
+    `https://api.github.com/users/${user.login}/repos`
+  );
+  const { isLoading, error } = state;
+  const repositories = state.data;
   const [formValues, setFormValues] = useState({
     sort: 'created',
     direction: 'desc',
   });
+
+  useEffect(() => {
+    try {
+      dispatch({ type: 'REQUEST_STARTED' });
+      fetchRepos()
+        .then(mapFromApiToRepos)
+        .then((data) =>
+          dispatch({ type: 'REQUEST_SUCCESSFUL', payload: data })
+        );
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: 'REQUEST_FAILED', error: err.message });
+    }
+  }, []);
 
   const onInputChange = (e: SelectChangeEvent<string>): void => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const onSubmit = async (e: React.SyntheticEvent): Promise<void> => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `https://api.github.com/users/${user.login}/repos?sort=${formValues.sort}&direction=${formValues.direction}`
-      );
-      const repos = await response.json();
-      setRepositories(repos);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  console.log(repositories);
-  console.log(error);
+  // const onSubmit = async (e: React.SyntheticEvent): Promise<void> => {
+  //   e.preventDefault();
+  //   try {
+  //     const params = {
+  //       direction: formValues.direction,
+  //       sort: formValues.sort,
+  //     };
+  //     dispatch({ type: 'REQUEST_STARTED' });
+  //     fetchRepos(params).then((response) => console.log(response));
+  //     // .then(mapFromApiToRepos)
+  //     // .then((data) =>
+  //     //   dispatch({ type: 'REQUEST_SUCCESSFUL', payload: data })
+  //     // );
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <>
-      <form id="sort-form" onSubmit={onSubmit}>
+      <form id="sort-form" onSubmit={() => console.log('hi')}>
         <Stack direction="row" spacing={4}>
           <Box sx={{ minWidth: 150 }}>
             <FormControl variant="filled" fullWidth>
@@ -90,11 +106,12 @@ const Repositories: React.FC = () => {
           </Button>
         </Stack>
       </form>
-      {loading ? (
+      {isLoading ? (
         <Typography variant="subtitle1">Loading...</Typography>
       ) : (
         <ReposList repositories={repositories} />
       )}
+      {error && <p>{error}</p>}
     </>
   );
 };

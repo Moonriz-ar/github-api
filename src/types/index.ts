@@ -33,7 +33,18 @@ export interface User {
   updated_at: string;
 }
 
-export interface Repository {
+export interface Repo {
+  description: string | null;
+  fork: boolean;
+  html_url: string;
+  id: number;
+  name: string;
+  language: string;
+  stargazers_count: number;
+  watchers_count: number;
+}
+
+export type ReposResponseFromApi = Array<{
   id: number;
   node_id: string;
   name: string;
@@ -131,4 +142,4 @@ export interface Repository {
   open_issues: number;
   watchers: number;
   default_branch: string;
-}
+}>;

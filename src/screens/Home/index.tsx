@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { userMock as user } from '../../mock/user';
+import { userMock as user } from '../../mocks/user';
 
 const Home: React.FC = () => {
   return (

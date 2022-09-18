@@ -11,10 +11,10 @@ import { StyledAnchor, StyledLink } from '../../../../components/Links/styles';
 import Stats from '../../../../components/Stats';
 import { Tag } from './styles';
 
-import { Repository } from '../../../../types';
+import { Repo } from '../../../../types';
 
 interface Props {
-  repository: Repository;
+  repository: Repo;
 }
 
 const RepoCard = ({ repository }: Props) => {

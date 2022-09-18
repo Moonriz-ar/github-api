@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { StyledLink } from '../Links/styles';
 
-import { userMock as user } from '../../mock/user';
+import { userMock as user } from '../../mocks/user';
 
 const MainLayout: React.FC = () => {
   return (

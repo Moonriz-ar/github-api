@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Stats from '../../components/Stats';
 import { StyledAnchor } from '../../components/Links/styles';
 
-import { userMock as user } from '../../mock/user';
+import { userMock as user } from '../../mocks/user';
 
 const Info: React.FC = () => {
   return (
