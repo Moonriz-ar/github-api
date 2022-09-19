@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -5,6 +6,8 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
@@ -13,32 +16,77 @@ import { StyledLink } from '../Links/styles';
 import { userMock as user } from '../../mocks/user';
 
 const MainLayout: React.FC = () => {
+  const [anchorElUser, setAnchorElUser] = useState<HTMLDivElement | null>(null);
+
+  const onOpenUserMenu = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const onCloseUserMenu = (
+    event: React.MouseEvent<HTMLLIElement, MouseEvent>
+  ): void => {
+    setAnchorElUser(null);
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1, height: 50 }} mb={4}>
-        <AppBar sx={{ padding: '8px 48px' }}>
-          <Stack direction="row" justifyContent="space-between">
-            <StyledLink to="home">
-              <Stack alignItems="center" direction="row" spacing={2}>
-                <Typography variant="h5">GitPanda</Typography>
-                <Box sx={{ width: 30 }}>
-                  <img src="/img/red-panda.svg" />
-                </Box>
-              </Stack>
-            </StyledLink>
+        <AppBar sx={{ padding: '8px 0px' }}>
+          <Container>
+            <Stack direction="row" justifyContent="space-between">
+              <StyledLink to="home">
+                <Stack alignItems="end" direction="row" spacing={2}>
+                  <Box sx={{ width: 30 }}>
+                    <img src="/img/red-panda.svg" />
+                  </Box>
+                  <Typography variant="h5">GitPanda</Typography>
+                </Stack>
+              </StyledLink>
 
-            <Stack alignItems="center" direction="row" spacing={2}>
-              <StyledLink to="/info">
-                <Button>User Info</Button>
-              </StyledLink>
-              <StyledLink to="/repositories">
-                <Button>Repos</Button>
-              </StyledLink>
-              <Button>Logout</Button>
-              <Typography variant="subtitle1">{user.name}</Typography>
-              <Avatar alt={user.name} src={user.avatar_url} />
+              <Stack alignItems="center" direction="row" spacing={2}>
+                <StyledLink to="/info">
+                  <Button>User Info</Button>
+                </StyledLink>
+                <StyledLink to="/repositories">
+                  <Button>Repos</Button>
+                </StyledLink>
+
+                <section>
+                  <Box
+                    onClick={onOpenUserMenu}
+                    sx={{
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <Typography variant="subtitle2">{user.name}</Typography>
+                    <Avatar alt={user.name} src={user.avatar_url} />
+                  </Box>
+                  <Menu
+                    id="menu-user"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={onCloseUserMenu}
+                    sx={{ mt: '48px' }}
+                  >
+                    <MenuItem onClick={onCloseUserMenu}>
+                      <Typography>Logout</Typography>
+                    </MenuItem>
+                  </Menu>
+                </section>
+              </Stack>
             </Stack>
-          </Stack>
+          </Container>
         </AppBar>
       </Box>
       <Container>
