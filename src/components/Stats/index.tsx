@@ -9,7 +9,7 @@ interface Props {
 const Stats = ({ title, body }: Props): JSX.Element => {
   return (
     <Stack>
-      <Typography variant="body1">{title} </Typography>
+      <Typography variant="body1">{title}</Typography>
       <Typography color="text.secondary" variant="body2">
         {body}
       </Typography>

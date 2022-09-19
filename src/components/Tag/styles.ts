@@ -8,3 +8,5 @@ export const Tag = styled(Typography)`
   padding: 3px 8px 2px 8px;
 `;
 Tag.displayName = 'Tag';
+
+export default Tag;

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 import { StyledAnchor, StyledLink } from '../../../../components/Links/styles';
 import Stats from '../../../../components/Stats';
-import { Tag } from './styles';
+import Tag from '../../../../components/Tag/styles';
 
 import { Repo } from '../../../../types';
 
@@ -50,6 +50,7 @@ const RepoCard = ({ repository }: Props) => {
         <Stack
           direction="row"
           divider={<Divider orientation="vertical" flexItem />}
+          spacing={2}
         >
           <Button>
             <StyledAnchor
@@ -61,7 +62,7 @@ const RepoCard = ({ repository }: Props) => {
             </StyledAnchor>
           </Button>
           <Button>
-            <StyledLink to={`${repository.id}`}>See Details</StyledLink>
+            <StyledLink to={`${repository.name}`}>See Details</StyledLink>
           </Button>
         </Stack>
       </CardActions>

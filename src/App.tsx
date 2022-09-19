@@ -19,9 +19,9 @@ const darkTheme = createTheme({
       contrastText: '#fff',
     },
     secondary: {
-      main: '#80deea',
-      light: '#99e4ee',
-      dark: '#599ba3',
+      main: '#A1C298',
+      light: '#bcceb6',
+      dark: '#7ca072',
       contrastText: '#000',
     },
   },
@@ -37,7 +37,7 @@ const App: React.FC = () => {
           <Route path="home" element={<Home />} />
           <Route path="info" element={<Info />} />
           <Route path="repositories" element={<Repositories />} />
-          <Route path="repositories/:repositoryId" element={<Repository />} />
+          <Route path="repositories/:repoName" element={<Repository />} />
         </Route>
         <Route path="*" element={<h1>404 Nothing here!</h1>} />
       </Routes>
