@@ -32,8 +32,8 @@ const App: React.FC = () => {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Routes>
+        <Route path="login" element={<Login />} />
         <Route path="/" element={<MainLayout />}>
-          <Route path="login" element={<Login />} />
           <Route path="home" element={<Home />} />
           <Route path="info" element={<Info />} />
           <Route path="repositories" element={<Repositories />} />
