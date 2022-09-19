@@ -7,7 +7,7 @@ import Info from './screens/Info';
 import Login from './screens/Login';
 import MainLayout from './components/MainLayout';
 import Repositories from './screens/Repositories';
-import Repository from './screens/Repository';
+import Repo from './screens/Repositories/components/Repo';
 
 const darkTheme = createTheme({
   palette: {
@@ -37,7 +37,7 @@ const App: React.FC = () => {
           <Route path="home" element={<Home />} />
           <Route path="info" element={<Info />} />
           <Route path="repositories" element={<Repositories />} />
-          <Route path="repositories/:repoName" element={<Repository />} />
+          <Route path="repositories/:repoName" element={<Repo />} />
         </Route>
         <Route path="*" element={<h1>404 Nothing here!</h1>} />
       </Routes>

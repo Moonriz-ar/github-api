@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { useFetchRepos } from '../../hooks/useFetchRepos';
 import ReposList from './components/RepoList';
 
-const Repositories: React.FC = () => {
+const Repo: React.FC = () => {
   const { state, fetchRepos } = useFetchRepos();
   const { isLoading, error } = state;
   const repositories = state.data;
@@ -88,4 +88,4 @@ const Repositories: React.FC = () => {
   );
 };
 
-export default Repositories;
+export default Repo;

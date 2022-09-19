@@ -12,11 +12,11 @@ import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { useFetchRepo } from '../../hooks/useFetchRepo';
+import { useFetchRepo } from '../../../../hooks/useFetchRepo';
 
-import Stats from '../../components/Stats';
-import { StyledAnchor } from '../../components/Links/styles';
-import Tag from '../../components/Tag/styles';
+import Stats from '../../../../components/Stats';
+import { StyledAnchor } from '../../../../components/Links/styles';
+import Tag from '../../../../components/Tag/styles';
 
 const Repository = () => {
   const { repoName } = useParams();
