@@ -21,7 +21,7 @@ const Repo: React.FC = () => {
 
   const [formValues, setFormValues] = useState({
     sort: 'created',
-    direction: 'desc',
+    direction: 'asc',
   });
 
   const onInputChange = (e: SelectChangeEvent<string>): void => {
