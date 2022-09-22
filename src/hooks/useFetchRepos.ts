@@ -1,8 +1,6 @@
-import { useEffect, useReducer } from 'react';
-
+import { useContext, useEffect, useReducer } from 'react';
+import { UserContext } from '../context/userContext';
 import { Repo, ReposResponseFromApi } from '../types/index';
-
-import { userMock as user } from '../mocks/user';
 
 interface Params {
   sort: string;
@@ -60,9 +58,10 @@ const INITIAL_STATE: FetchState = {
   error: null,
 };
 
-const REPOS_API_URL = `https://api.github.com/users/${user.login}/repos`;
+const REPOS_API_URL = `https://api.github.com/users`;
 
 export const useFetchRepos = () => {
+  const userContext = useContext(UserContext);
   const [state, dispatch] = useReducer(fetchReposReducer, INITIAL_STATE);
 
   useEffect(() => {
@@ -76,7 +75,7 @@ export const useFetchRepos = () => {
       dispatch({ type: 'REQUEST_STARTED' });
       if (params) {
         const response = await fetch(
-          `${REPOS_API_URL}?sort=${params.sort}&direction=${params.direction}`
+          `${REPOS_API_URL}/${userContext.user?.login}/repos?sort=${params.sort}&direction=${params.direction}`
         );
         if (!response.ok) {
           throw new Error(`${response.status} ${response.statusText}`);
@@ -86,7 +85,9 @@ export const useFetchRepos = () => {
         dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
         return data;
       } else {
-        const response = await fetch(REPOS_API_URL);
+        const response = await fetch(
+          `${REPOS_API_URL}/${userContext.user?.login}/repos`
+        );
         if (!response.ok) {
           throw new Error(`${response.status} ${response.statusText}`);
         }

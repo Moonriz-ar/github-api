@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
+
+import { UserContext } from '../../context/userContext';
 
 import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
@@ -13,9 +15,9 @@ import Typography from '@mui/material/Typography';
 
 import { StyledLink } from '../Links/styles';
 
-import { userMock as user } from '../../mocks/user';
-
 const MainLayout: React.FC = () => {
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = useState<HTMLDivElement | null>(null);
 
   const onOpenUserMenu = (
@@ -28,6 +30,13 @@ const MainLayout: React.FC = () => {
     event: React.MouseEvent<HTMLLIElement, MouseEvent>
   ): void => {
     setAnchorElUser(null);
+  };
+
+  const onClickLogout = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ): void => {
+    userContext.setUser(null);
+    navigate('/login');
   };
 
   return (
@@ -63,8 +72,13 @@ const MainLayout: React.FC = () => {
                       gap: '8px',
                     }}
                   >
-                    <Typography variant="subtitle2">{user.name}</Typography>
-                    <Avatar alt={user.name} src={user.avatar_url} />
+                    <Typography variant="subtitle2">
+                      {userContext.user?.name}
+                    </Typography>
+                    <Avatar
+                      alt={userContext.user?.name}
+                      src={userContext.user?.avatar_url}
+                    />
                   </Box>
                   <Menu
                     id="menu-user"
@@ -80,7 +94,7 @@ const MainLayout: React.FC = () => {
                     sx={{ mt: '48px' }}
                   >
                     <MenuItem onClick={onCloseUserMenu}>
-                      <Typography>Logout</Typography>
+                      <Typography onClick={onClickLogout}>Logout</Typography>
                     </MenuItem>
                   </Menu>
                 </section>

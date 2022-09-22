@@ -1,17 +1,23 @@
+import { useContext } from 'react';
+
+import { UserContext } from '../../context/userContext';
+
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { userMock as user } from '../../mocks/user';
-
 const Home: React.FC = () => {
+  const userContext = useContext(UserContext);
+
   return (
     <Stack alignItems="center">
       <Typography variant="h2" gutterBottom>
         Welcome,
       </Typography>
-      <Typography variant="h2" color="primary" gutterBottom>
-        {user.name}
-      </Typography>
+      {userContext && (
+        <Typography variant="h2" color="primary" gutterBottom>
+          {userContext.user?.login}
+        </Typography>
+      )}
     </Stack>
   );
 };

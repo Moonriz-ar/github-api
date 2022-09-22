@@ -18,13 +18,13 @@ export interface User {
   type: string;
   site_admin: boolean;
   name: string;
-  company: string;
+  company: Nullable<string>;
   blog: string;
   location: string;
-  email: string;
-  hireable: boolean;
+  email: Nullable<string>;
+  hireable: Nullable<boolean>;
   bio: string;
-  twitter_username: string;
+  twitter_username: Nullable<string>;
   public_repos: number;
   public_gists: number;
   followers: number;

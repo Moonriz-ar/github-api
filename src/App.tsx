@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
+import { UserContextProvider } from './context/userContext';
+
 import Home from './screens/Home';
 import Info from './screens/Info';
 import Login from './screens/Login';
@@ -29,19 +31,21 @@ const darkTheme = createTheme({
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Routes>
-        <Route path="login" element={<Login />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route path="home" element={<Home />} />
-          <Route path="info" element={<Info />} />
-          <Route path="repositories" element={<Repositories />} />
-          <Route path="repositories/:repoName" element={<Repo />} />
-        </Route>
-        <Route path="*" element={<h1>404 Nothing here!</h1>} />
-      </Routes>
-    </ThemeProvider>
+    <UserContextProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Routes>
+          <Route path="login" element={<Login />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route path="home" element={<Home />} />
+            <Route path="info" element={<Info />} />
+            <Route path="repositories" element={<Repositories />} />
+            <Route path="repositories/:repoName" element={<Repo />} />
+          </Route>
+          <Route path="*" element={<h1>404 Nothing here!</h1>} />
+        </Routes>
+      </ThemeProvider>
+    </UserContextProvider>
   );
 };
 

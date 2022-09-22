@@ -1,4 +1,5 @@
-import { useEffect, useReducer } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
+import { UserContext } from '../context/userContext';
 
 import {
   Language,
@@ -6,8 +7,6 @@ import {
   RepoData,
   RepoResponseFromApi,
 } from '../types';
-
-import { userMock as user } from '../mocks/user';
 
 interface FetchState {
   error: string | null;
@@ -74,6 +73,7 @@ const INITIAL_STATE: FetchState = {
 };
 
 export const useFetchRepo = (repoName: string | undefined) => {
+  const userContext = useContext(UserContext);
   const [state, dispatch] = useReducer(fetchRepoReducer, INITIAL_STATE);
 
   useEffect(() => {
@@ -87,10 +87,10 @@ export const useFetchRepo = (repoName: string | undefined) => {
       dispatch({ type: 'REQUEST_STARTED' });
 
       const responseRepo = await fetch(
-        `https://api.github.com/repos/${user.login}/${repoName}`
+        `https://api.github.com/repos/${userContext.user?.login}/${repoName}`
       );
       const responseLanguages = await fetch(
-        `https://api.github.com/repos/${user.login}/${repoName}/languages`
+        `https://api.github.com/repos/${userContext.user?.login}/${repoName}/languages`
       );
 
       if (!responseRepo.ok) {
