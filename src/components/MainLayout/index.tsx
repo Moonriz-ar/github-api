@@ -49,7 +49,7 @@ const MainLayout = ({ children }: Props) => {
         <AppBar sx={{ padding: '8px 0px' }}>
           <Container>
             <Stack direction="row" justifyContent="space-between">
-              <StyledLink to="home">
+              <StyledLink to="/">
                 <Stack alignItems="end" direction="row" spacing={2}>
                   <Box sx={{ width: 30 }}>
                     <img src="/img/red-panda.svg" />
