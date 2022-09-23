@@ -1,6 +1,6 @@
 # GitPanda
 
-A webapp that lets you input a Github username, and checkout the user's bio info and repositories by integrating with Github API.
+A webapp that lets you input a Github username (for example, my username: Moonriz-ar), and checkout the user's bio info and repositories by integrating with Github API.
 
 <br />
 
