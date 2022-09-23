@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { UserContext } from '../context/userContext';
 import { Repo, ReposResponseFromApi } from '../types/index';
 
@@ -64,43 +64,44 @@ export const useFetchRepos = () => {
   const userContext = useContext(UserContext);
   const [state, dispatch] = useReducer(fetchReposReducer, INITIAL_STATE);
 
+  const fetchRepos = React.useCallback(
+    async function (params?: Params): Promise<ReposResponseFromApi | string> {
+      try {
+        dispatch({ type: 'REQUEST_STARTED' });
+        if (params) {
+          const response = await fetch(
+            `${REPOS_API_URL}/${userContext.user?.login}/repos?sort=${params.sort}&direction=${params.direction}`
+          );
+          if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText}`);
+          }
+          const data = await response.json();
+          const repositories = mapFromApiToRepos(data);
+          dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
+          return data;
+        } else {
+          const response = await fetch(
+            `${REPOS_API_URL}/${userContext.user?.login}/repos`
+          );
+          if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText}`);
+          }
+          const data = await response.json();
+          const repositories = mapFromApiToRepos(data);
+          dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
+          return data;
+        }
+      } catch (err: any) {
+        dispatch({ type: 'REQUEST_FAILED', error: err.message });
+        throw err;
+      }
+    },
+    [userContext]
+  );
+
   useEffect(() => {
     fetchRepos();
-  }, []);
-
-  async function fetchRepos(
-    params?: Params
-  ): Promise<ReposResponseFromApi | string> {
-    try {
-      dispatch({ type: 'REQUEST_STARTED' });
-      if (params) {
-        const response = await fetch(
-          `${REPOS_API_URL}/${userContext.user?.login}/repos?sort=${params.sort}&direction=${params.direction}`
-        );
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
-        const data = await response.json();
-        const repositories = mapFromApiToRepos(data);
-        dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
-        return data;
-      } else {
-        const response = await fetch(
-          `${REPOS_API_URL}/${userContext.user?.login}/repos`
-        );
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
-        const data = await response.json();
-        const repositories = mapFromApiToRepos(data);
-        dispatch({ type: 'REQUEST_SUCCESSFUL', payload: repositories });
-        return data;
-      }
-    } catch (err: any) {
-      dispatch({ type: 'REQUEST_FAILED', error: err.message });
-      throw err;
-    }
-  }
+  }, [fetchRepos]);
 
   function mapFromApiToRepos(apiResponse: ReposResponseFromApi): Array<Repo> {
     return apiResponse.map((repoFromApi) => {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { UserContext } from '../context/userContext';
 
 import {
@@ -76,46 +76,49 @@ export const useFetchRepo = (repoName: string | undefined) => {
   const userContext = useContext(UserContext);
   const [state, dispatch] = useReducer(fetchRepoReducer, INITIAL_STATE);
 
+  const fetchRepo = React.useCallback(
+    async function (
+      repoName: string | undefined
+    ): Promise<RepoResponseFromApi | string> {
+      try {
+        dispatch({ type: 'REQUEST_STARTED' });
+
+        const responseRepo = await fetch(
+          `https://api.github.com/repos/${userContext.user?.login}/${repoName}`
+        );
+        const responseLanguages = await fetch(
+          `https://api.github.com/repos/${userContext.user?.login}/${repoName}/languages`
+        );
+
+        if (!responseRepo.ok) {
+          throw new Error(`${responseRepo.status} ${responseRepo.statusText}`);
+        }
+        if (!responseLanguages.ok) {
+          throw new Error(
+            `${responseLanguages.status} ${responseLanguages.statusText}`
+          );
+        }
+
+        const repoData = await responseRepo.json();
+        const languagesData = await responseLanguages.json();
+
+        const repo = mapFromApiToRepo(repoData);
+        const languages = mapFromApiToLanguages(languagesData);
+
+        dispatch({ type: 'REQUEST_REPO_SUCCESSFUL', payload: repo });
+        dispatch({ type: 'REQUEST_LANGUAGES_SUCCESSFUL', payload: languages });
+        return repoData;
+      } catch (err: any) {
+        dispatch({ type: 'REQUEST_FAILED', error: err.message });
+        throw err;
+      }
+    },
+    [userContext, repoName]
+  );
+
   useEffect(() => {
     fetchRepo(repoName);
-  }, []);
-
-  async function fetchRepo(
-    repoName: string | undefined
-  ): Promise<RepoResponseFromApi | string> {
-    try {
-      dispatch({ type: 'REQUEST_STARTED' });
-
-      const responseRepo = await fetch(
-        `https://api.github.com/repos/${userContext.user?.login}/${repoName}`
-      );
-      const responseLanguages = await fetch(
-        `https://api.github.com/repos/${userContext.user?.login}/${repoName}/languages`
-      );
-
-      if (!responseRepo.ok) {
-        throw new Error(`${responseRepo.status} ${responseRepo.statusText}`);
-      }
-      if (!responseLanguages.ok) {
-        throw new Error(
-          `${responseLanguages.status} ${responseLanguages.statusText}`
-        );
-      }
-
-      const repoData = await responseRepo.json();
-      const languagesData = await responseLanguages.json();
-
-      const repo = mapFromApiToRepo(repoData);
-      const languages = mapFromApiToLanguages(languagesData);
-
-      dispatch({ type: 'REQUEST_REPO_SUCCESSFUL', payload: repo });
-      dispatch({ type: 'REQUEST_LANGUAGES_SUCCESSFUL', payload: languages });
-      return repoData;
-    } catch (err: any) {
-      dispatch({ type: 'REQUEST_FAILED', error: err.message });
-      throw err;
-    }
-  }
+  }, [fetchRepo]);
 
   function mapFromApiToLanguages(
     apiResponse: LanguagesFromApi
