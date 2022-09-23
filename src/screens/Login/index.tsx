@@ -47,7 +47,7 @@ const Login = () => {
       }
       const userData = await responseUser.json();
       userContext.setUser(userData);
-      navigate('/home');
+      navigate('/');
       setCurrentUser('');
       return userData;
     } catch (err) {

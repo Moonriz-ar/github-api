@@ -15,7 +15,11 @@ import Typography from '@mui/material/Typography';
 
 import { StyledLink } from '../Links/styles';
 
-const MainLayout: React.FC = () => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const MainLayout = ({ children }: Props) => {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = useState<HTMLDivElement | null>(null);
@@ -104,9 +108,7 @@ const MainLayout: React.FC = () => {
         </AppBar>
       </Box>
       <Container>
-        <Box mb={4}>
-          <Outlet />
-        </Box>
+        <Box mb={4}>{children}</Box>
       </Container>
     </>
   );

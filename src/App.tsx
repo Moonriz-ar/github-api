@@ -10,6 +10,7 @@ import Login from './screens/Login';
 import MainLayout from './components/MainLayout';
 import Repositories from './screens/Repositories';
 import Repo from './screens/Repositories/components/Repo';
+import PrivateOutlet from './components/PrivateOutlet';
 
 const darkTheme = createTheme({
   palette: {
@@ -35,13 +36,13 @@ const App: React.FC = () => {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="/" element={<MainLayout />}>
-            <Route path="home" element={<Home />} />
+          <Route path="/" element={<PrivateOutlet />}>
+            <Route index element={<Home />} />
             <Route path="info" element={<Info />} />
             <Route path="repositories" element={<Repositories />} />
             <Route path="repositories/:repoName" element={<Repo />} />
           </Route>
+          <Route path="login" element={<Login />} />
           <Route path="*" element={<h1>404 Nothing here!</h1>} />
         </Routes>
       </ThemeProvider>
