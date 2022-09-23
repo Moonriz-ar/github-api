@@ -94,6 +94,9 @@ const Login = () => {
             Login
           </Button>
         </Stack>
+        <Typography variant="body1">
+          Enter a github username to check it out!
+        </Typography>
       </Stack>
     </Container>
   );
