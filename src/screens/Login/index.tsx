@@ -37,6 +37,11 @@ const Login = () => {
           text: `Opps.. We coudn't find that user!`,
         });
       }
+      if (responseUser.status === 403) {
+        Swal.fire({
+          text: 'Oh, we reached the API call limit! Please try again an hour later.',
+        });
+      }
       if (!responseUser.ok) {
         throw new Error(`${responseUser.status} ${responseUser.statusText}`);
       }
