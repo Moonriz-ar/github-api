@@ -4,6 +4,8 @@ import Grid from '@mui/material/Grid';
 import { Repo } from '../../../../types';
 import RepoCard from '../RepoCard';
 
+import { GridStyled } from './styles';
+
 interface Props {
   repositories: Array<Repo> | null;
 }
@@ -13,9 +15,9 @@ const ReposList = ({ repositories }: Props) => {
     <Box sx={{ flexGrow: 1 }} my={4}>
       <Grid container spacing={2}>
         {repositories?.map((repository) => (
-          <Grid item key={repository.id} xs={12} md={6} lg={4}>
+          <GridStyled item key={repository.id} xs={12} md={6} lg={4}>
             <RepoCard repository={repository} />
-          </Grid>
+          </GridStyled>
         ))}
       </Grid>
     </Box>

@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-// styles to make card take up 100%
+// styles apply display flex and column direction for card content and card actions
 export const CardStyled = styled(Card)`
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 CardStyled.displayName = 'CardStyled';
 
