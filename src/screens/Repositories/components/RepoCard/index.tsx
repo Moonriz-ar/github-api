@@ -1,17 +1,16 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { Repo } from '../../../../types';
+
 import { StyledAnchor, StyledLink } from '../../../../components/Links/styles';
 import Stats from '../../../../components/Stats';
 import Tag from '../../../../components/Tag/styles';
-
-import { Repo } from '../../../../types';
+import { CardStyled, CardContentStyled } from './styles';
 
 interface Props {
   repository: Repo;
@@ -19,8 +18,8 @@ interface Props {
 
 const RepoCard = ({ repository }: Props) => {
   return (
-    <Card>
-      <CardContent>
+    <CardStyled>
+      <CardContentStyled>
         <Stack
           alignItems="start"
           direction="row"
@@ -29,11 +28,11 @@ const RepoCard = ({ repository }: Props) => {
           <Typography variant="h6" gutterBottom>
             {repository.name}
           </Typography>
-          {repository.fork ? (
+          {repository.fork && (
             <Tag variant="body2" color="text.secondary">
               forked
             </Tag>
-          ) : undefined}
+          )}
         </Stack>
         <Divider />
         <Stack direction="row" marginY={2} spacing={4}>
@@ -44,7 +43,7 @@ const RepoCard = ({ repository }: Props) => {
         <Box>
           <Stats title="Description" body={repository.description} />
         </Box>
-      </CardContent>
+      </CardContentStyled>
       <Divider variant="middle" />
       <CardActions>
         <Stack
@@ -66,7 +65,7 @@ const RepoCard = ({ repository }: Props) => {
           </Button>
         </Stack>
       </CardActions>
-    </Card>
+    </CardStyled>
   );
 };
 
