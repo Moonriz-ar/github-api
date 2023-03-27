@@ -36,17 +36,6 @@ export interface User {
 // types for repos screen
 
 export interface Repo {
-  description: string;
-  fork: boolean;
-  html_url: string;
-  id: number;
-  name: string;
-  language: string;
-  stargazers_count: number;
-  watchers_count: number;
-}
-
-export type ReposResponseFromApi = Array<{
   id: number;
   node_id: string;
   name: string;
@@ -144,7 +133,9 @@ export type ReposResponseFromApi = Array<{
   open_issues: number;
   watchers: number;
   default_branch: string;
-}>;
+}
+
+export type ReposResponseFromApi = Array<Repo>;
 
 // types for repo detail screen
 export interface Language {

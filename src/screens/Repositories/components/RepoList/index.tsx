@@ -1,13 +1,13 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import { Repo } from '../../../../types';
+import { Repo, ReposResponseFromApi } from '../../../../types';
 import RepoCard from '../RepoCard';
 
 import { GridStyled } from './styles';
 
 interface Props {
-  repositories: Array<Repo> | null;
+  repositories: ReposResponseFromApi | null;
 }
 
 const ReposList = ({ repositories }: Props) => {

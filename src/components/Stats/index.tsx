@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 
 interface Props {
   title: string;
-  body: string | number | undefined;
+  body: string | number | undefined | null;
 }
 
 const Stats = ({ title, body }: Props): JSX.Element => {

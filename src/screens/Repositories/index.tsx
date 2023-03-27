@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { store, useSnapshot } from '../../store/store';
+import { useQuery } from '@tanstack/react-query';
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -11,18 +13,50 @@ import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { useFetchRepos } from '../../hooks/useFetchRepos';
+import { ReposResponseFromApi } from '../../types';
 import ReposList from './components/RepoList';
 
-const Repo: React.FC = () => {
-  const { state, fetchRepos } = useFetchRepos();
-  const { isLoading, error } = state;
-  const repositories = state.data;
+const getRepos = async (
+  username: string | undefined,
+  sort: string,
+  direction: string
+): Promise<ReposResponseFromApi> => {
+  const response = await fetch(
+    `https://api.github.com/users/${username}/repos?sort=${sort}&direction=${direction}`
+  );
+  const data = await response.json();
+  return data;
+};
 
+const Repo: React.FC = () => {
+  const snap = useSnapshot(store);
+  const username = snap ? snap.user?.login : '';
   const [formValues, setFormValues] = useState({
     sort: 'created',
     direction: 'asc',
   });
+
+  const {
+    isLoading: isLoadingRepos,
+    error: errorRepos,
+    data: dataRepos,
+    refetch,
+  } = useQuery<ReposResponseFromApi, Error>({
+    queryKey: ['dataRepos', username],
+    queryFn: () => getRepos(username, formValues.sort, formValues.direction),
+    enabled: false,
+    select: (dataRepos) => {
+      var reposCopy = dataRepos;
+      reposCopy.forEach((repo) => {
+        repo.description ? repo.description : 'No Description';
+      });
+      return reposCopy;
+    },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const onInputChange = (e: SelectChangeEvent<string>): void => {
     const { name, value } = e.target;
@@ -31,7 +65,7 @@ const Repo: React.FC = () => {
 
   const onSubmit = (e: React.SyntheticEvent): void => {
     e.preventDefault();
-    fetchRepos({ direction: formValues.direction, sort: formValues.sort });
+    refetch();
   };
 
   return (
@@ -77,9 +111,11 @@ const Repo: React.FC = () => {
           </Button>
         </Stack>
       </form>
-      {isLoading && <Typography variant="subtitle1">Loading...</Typography>}
-      {repositories && <ReposList repositories={repositories} />}
-      <Snackbar open={!!error}>
+      {isLoadingRepos && (
+        <Typography variant="subtitle1">Loading...</Typography>
+      )}
+      {dataRepos && <ReposList repositories={dataRepos} />}
+      <Snackbar open={!!errorRepos}>
         <Alert elevation={6} severity="error" variant="filled">
           Oh, there was an error in the request
         </Alert>
