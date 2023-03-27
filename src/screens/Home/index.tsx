@@ -1,21 +1,19 @@
-import { useContext } from 'react';
-
-import { UserContext } from '../../context/userContext';
+import { store, useSnapshot } from '../../store/store';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 const Home: React.FC = () => {
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
 
   return (
     <Stack alignItems="center">
       <Typography variant="h2" gutterBottom>
         Welcome,
       </Typography>
-      {userContext && (
+      {snap.user && (
         <Typography variant="h2" color="primary" gutterBottom>
-          {userContext.user?.login}
+          {snap.user?.login}
         </Typography>
       )}
     </Stack>

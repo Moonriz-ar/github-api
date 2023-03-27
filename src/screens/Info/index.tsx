@@ -1,6 +1,4 @@
-import { useContext } from 'react';
-
-import { UserContext } from '../../context/userContext';
+import { store, useSnapshot } from '../../store/store';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -15,33 +13,30 @@ import Stats from '../../components/Stats';
 import { StyledAnchor } from '../../components/Links/styles';
 
 const Info: React.FC = () => {
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
 
   return (
     <Card>
       <CardContent>
         <Stack alignItems="center" direction="row" mb={2} spacing={2}>
-          <Avatar
-            alt={userContext.user?.name}
-            src={userContext.user?.avatar_url}
-          />
+          <Avatar alt={snap.user?.name} src={snap.user?.avatar_url} />
           <Typography variant="h5" gutterBottom>
-            {userContext.user?.name}
+            {snap.user?.name}
           </Typography>
         </Stack>
         <Divider />
         <Stack direction="row" my={2} spacing={8}>
-          <Stats title="Followers" body={userContext.user?.followers} />
-          <Stats title="Following" body={userContext.user?.following} />
-          <Stats title="Repos" body={userContext.user?.public_repos} />
+          <Stats title="Followers" body={snap.user?.followers} />
+          <Stats title="Following" body={snap.user?.following} />
+          <Stats title="Repos" body={snap.user?.public_repos} />
         </Stack>
-        {userContext.user?.bio && (
+        {snap.user?.bio && (
           <Stack>
             <Typography variant="h6" gutterBottom>
               Bio
             </Typography>
             <Typography color="text.secondary" variant="body2" gutterBottom>
-              {userContext.user?.bio}
+              {snap.user?.bio}
             </Typography>
           </Stack>
         )}
@@ -50,7 +45,7 @@ const Info: React.FC = () => {
       <CardActions>
         <Button>
           <StyledAnchor
-            href={userContext.user?.html_url}
+            href={snap.user?.html_url}
             rel="noopener"
             target="_blank"
           >

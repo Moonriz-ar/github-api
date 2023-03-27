@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useReducer } from 'react';
-import { UserContext } from '../context/userContext';
+import React, { useEffect, useReducer } from 'react';
+import { store, useSnapshot } from '../store/store';
 
 import {
   Language,
@@ -73,7 +73,7 @@ const INITIAL_STATE: FetchState = {
 };
 
 export const useFetchRepo = (repoName: string | undefined) => {
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
   const [state, dispatch] = useReducer(fetchRepoReducer, INITIAL_STATE);
 
   const fetchRepo = React.useCallback(
@@ -84,10 +84,10 @@ export const useFetchRepo = (repoName: string | undefined) => {
         dispatch({ type: 'REQUEST_STARTED' });
 
         const responseRepo = await fetch(
-          `https://api.github.com/repos/${userContext.user?.login}/${repoName}`
+          `https://api.github.com/repos/${snap.user?.login}/${repoName}`
         );
         const responseLanguages = await fetch(
-          `https://api.github.com/repos/${userContext.user?.login}/${repoName}/languages`
+          `https://api.github.com/repos/${snap.user?.login}/${repoName}/languages`
         );
 
         if (!responseRepo.ok) {
@@ -113,7 +113,7 @@ export const useFetchRepo = (repoName: string | undefined) => {
         throw err;
       }
     },
-    [userContext, repoName]
+    [snap, repoName]
   );
 
   useEffect(() => {

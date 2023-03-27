@@ -1,3 +1,19 @@
+import { proxy, useSnapshot, subscribe } from 'valtio';
+
+import { User } from '../types/index';
+
+type NullableUser = User | null;
+
+const store = proxy<{ user: NullableUser }>({ user: null });
+
+const setUser = (user: NullableUser) => {
+  store.user = user;
+};
+
+export { store, useSnapshot, subscribe, setUser };
+
+// Below is previous implementation with react context
+/*
 import React, { createContext, useState } from 'react';
 
 import { User } from '../types/index';
@@ -21,3 +37,4 @@ export const UserContextProvider = ({ children }: Props) => {
     </UserContext.Provider>
   );
 };
+*/

@@ -1,16 +1,15 @@
-import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { UserContext } from '../../context/userContext';
+import { store, useSnapshot } from '../../store/store';
 
 interface Props {
   children: React.ReactNode;
 }
 
 const PublicOutlet = ({ children }: Props) => {
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
 
-  return !userContext.user?.id ? (
+  return !snap.user?.id ? (
     <>
       {children}
       <Outlet />

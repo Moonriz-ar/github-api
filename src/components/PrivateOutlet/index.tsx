@@ -1,13 +1,12 @@
-import { useContext } from 'react';
+import { store, useSnapshot } from '../../store/store';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { UserContext } from '../../context/userContext';
 import MainLayout from '../MainLayout';
 
 const PrivateOutlet = () => {
-  const userContext = useContext(UserContext); // auth context
+  const snap = useSnapshot(store);
 
-  return userContext.user?.id ? ( // check if logged in
+  return snap.user?.id ? ( // check if logged in
     <>
       <MainLayout>
         <Outlet />

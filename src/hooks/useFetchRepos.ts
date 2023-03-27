@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useReducer } from 'react';
-import { UserContext } from '../context/userContext';
+import React, { useEffect, useReducer } from 'react';
+import { store, useSnapshot } from '../store/store';
 import { Repo, ReposResponseFromApi } from '../types/index';
 
 interface Params {
@@ -61,7 +61,7 @@ const INITIAL_STATE: FetchState = {
 const REPOS_API_URL = `https://api.github.com/users`;
 
 export const useFetchRepos = () => {
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
   const [state, dispatch] = useReducer(fetchReposReducer, INITIAL_STATE);
 
   const fetchRepos = React.useCallback(
@@ -70,7 +70,7 @@ export const useFetchRepos = () => {
         dispatch({ type: 'REQUEST_STARTED' });
         if (params) {
           const response = await fetch(
-            `${REPOS_API_URL}/${userContext.user?.login}/repos?sort=${params.sort}&direction=${params.direction}`
+            `${REPOS_API_URL}/${snap.user?.login}/repos?sort=${params.sort}&direction=${params.direction}`
           );
           if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText}`);
@@ -81,7 +81,7 @@ export const useFetchRepos = () => {
           return data;
         } else {
           const response = await fetch(
-            `${REPOS_API_URL}/${userContext.user?.login}/repos`
+            `${REPOS_API_URL}/${snap.user?.login}/repos`
           );
           if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText}`);
@@ -96,7 +96,7 @@ export const useFetchRepos = () => {
         throw err;
       }
     },
-    [userContext]
+    [snap.user]
   );
 
   useEffect(() => {

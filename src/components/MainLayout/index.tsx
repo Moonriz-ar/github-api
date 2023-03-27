@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { UserContext } from '../../context/userContext';
+import { store, useSnapshot, setUser } from '../../store/store';
 
 import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const MainLayout = ({ children }: Props) => {
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
   const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = useState<HTMLDivElement | null>(null);
 
@@ -39,7 +39,7 @@ const MainLayout = ({ children }: Props) => {
   const onClickLogout = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ): void => {
-    userContext.setUser(null);
+    setUser(null);
     navigate('/login');
   };
 
@@ -77,12 +77,9 @@ const MainLayout = ({ children }: Props) => {
                     }}
                   >
                     <Typography variant="subtitle2">
-                      {userContext.user?.name}
+                      {snap.user?.name}
                     </Typography>
-                    <Avatar
-                      alt={userContext.user?.name}
-                      src={userContext.user?.avatar_url}
-                    />
+                    <Avatar alt={snap.user?.name} src={snap.user?.avatar_url} />
                   </Box>
                   <Menu
                     id="menu-user"

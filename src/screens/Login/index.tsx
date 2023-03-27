@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-import { UserContext } from '../../context/userContext';
+import { store, useSnapshot, setUser } from '../../store/store';
 
 import { User } from '../../types/index';
 
@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 
 const Login = () => {
   const navigate = useNavigate();
-  const userContext = useContext(UserContext);
+  const snap = useSnapshot(store);
   const [currentUser, setCurrentUser] = useState('');
 
   const onChangeUsername = (
@@ -46,7 +46,7 @@ const Login = () => {
         throw new Error(`${responseUser.status} ${responseUser.statusText}`);
       }
       const userData = await responseUser.json();
-      userContext.setUser(userData);
+      setUser(userData);
       navigate('/');
       setCurrentUser('');
       return userData;
