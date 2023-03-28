@@ -4,7 +4,15 @@ import { User } from '../types/index';
 
 type NullableUser = User | null;
 
-const store = proxy<{ user: NullableUser }>({ user: null });
+const storedUser = localStorage.getItem('user');
+
+const store = proxy<{ user: NullableUser }>(
+  storedUser ? JSON.parse(storedUser) : { user: null }
+);
+
+subscribe(store, () => {
+  localStorage.setItem('user', JSON.stringify(store));
+});
 
 const setUser = (user: NullableUser) => {
   store.user = user;
