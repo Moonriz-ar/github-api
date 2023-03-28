@@ -92,8 +92,8 @@ const Repository = () => {
     },
   });
 
-  if (errorRepo) return 'An error has occurred';
-  if (errorLanguages) return 'An error has occurred';
+  if (errorRepo) return <h1>'An error has occurred'</h1>;
+  if (errorLanguages) return <h1>'An error has occurred'</h1>;
 
   return (
     <>
