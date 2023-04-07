@@ -1,4 +1,5 @@
 import { proxy, useSnapshot, subscribe } from 'valtio';
+import { devtools } from 'valtio/utils'
 
 import { User } from '../types/index';
 
@@ -9,6 +10,8 @@ const storedUser = localStorage.getItem('user');
 const store = proxy<{ user: NullableUser }>(
   storedUser ? JSON.parse(storedUser) : { user: null }
 );
+
+const unsub = devtools(store, { name: 'store', enabled: true });
 
 subscribe(store, () => {
   localStorage.setItem('user', JSON.stringify(store));
